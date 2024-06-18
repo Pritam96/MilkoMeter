@@ -2,18 +2,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Input from "./UIComponents/Input";
 import Button from "./UIComponents/Button";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { setCredentials } from "../store/authSlice";
+import { register as authRegister } from "../store/authSlice";
 
 const Register = () => {
-  const [error, setError] = useState("");
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user } = useSelector((state) => state.auth);
+  const { user, isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (user) {
@@ -32,16 +29,7 @@ const Register = () => {
   });
 
   const onSubmit = async (data) => {
-    setError("");
-    try {
-      const res = await axios.post("api/auth/register", data);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("userInfo", JSON.stringify(res.data.user));
-      dispatch(setCredentials({ ...res.data }));
-      navigate("/");
-    } catch (err) {
-      setError(err?.response?.data?.message || "Something went wrong!");
-    }
+    dispatch(authRegister(data));
   };
 
   return (
@@ -59,7 +47,6 @@ const Register = () => {
             Login here
           </Link>
         </p>
-        {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
           <div>
             <Input
@@ -137,8 +124,10 @@ const Register = () => {
               </Button>
             </div>
             <div className="h-3 p-2">
-              {error && (
-                <p className="text-red-600 text-md text-center">{error}</p>
+              {isError && (
+                <p className="text-red-600 text-md text-center">
+                  {isError.message}
+                </p>
               )}
             </div>
           </div>
