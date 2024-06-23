@@ -11,7 +11,8 @@ exports.protect = asyncHandler(async (req, res, next) => {
     } else if (req.cookies?.token) {
       token = req.cookies.token;
     } else {
-      return res.status(401).json({ error: "Not authorized" });
+      res.status(401);
+      throw new Error("Not authorized");
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -19,6 +20,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    res.status(401).json({ error: error.message });
+    res.status(401);
+    throw new Error("Not authorized");
   }
 });
