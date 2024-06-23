@@ -52,16 +52,11 @@ const sendTokenResponse = (user, statusCode, res) => {
     ),
     httpOnly: true,
   };
-  res
-    .status(statusCode)
-    .cookie("token", token, options)
-    .json({
-      user: {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        isSeller: user.isSeller,
-      },
-      token,
-    });
+  res.status(statusCode).cookie("token", token, options).json({
+    _id: user._id,
+    username: user.username,
+    email: user.email,
+    isSeller: user.isSeller,
+    token: token,
+  });
 };

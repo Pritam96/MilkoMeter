@@ -1,20 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import Button from "./UIComponents/Button";
 import { useDispatch } from "react-redux";
-import { removeCredentials } from "../store/authSlice";
-import axios from "axios";
+import { logout } from "../features/auth/authSlice";
 
 const LogoutBtn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logoutHandler = async () => {
-    try {
-      await axios.get("api/auth/logout");
-      dispatch(removeCredentials());
-      navigate("/");
-    } catch (err) {
-      console.log(err?.response?.data?.message || "Something went wrong!");
-    }
+    dispatch(logout());
+    navigate("/");
   };
   return (
     <Button

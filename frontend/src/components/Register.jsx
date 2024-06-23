@@ -4,19 +4,29 @@ import Input from "./UIComponents/Input";
 import Button from "./UIComponents/Button";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { register as authRegister } from "../store/authSlice";
+import { register as authRegister, reset } from "../features/auth/authSlice";
 
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user, isError } = useSelector((state) => state.auth);
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
   useEffect(() => {
-    if (user) {
+    if (isError) {
+      console.log(message);
+    }
+    if (isSuccess || user) {
       navigate("/");
     }
-  }, [navigate, user]);
+    return () => {
+      if (isSuccess || isError) {
+        dispatch(reset());
+      }
+    };
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const {
     register,
@@ -115,19 +125,22 @@ const Register = () => {
               )}
             </div>
 
-            <div>
-              <Button
-                type="submit"
-                className="inline-flex w-full items-center justify-center mt-5 rounded-lg"
-              >
-                Create Account
-              </Button>
-            </div>
+            {isLoading ? (
+              <p>Loading..</p>
+            ) : (
+              <div>
+                <Button
+                  type="submit"
+                  className="inline-flex w-full items-center justify-center mt-5 rounded-lg"
+                >
+                  Create Account
+                </Button>
+              </div>
+            )}
+
             <div className="h-3 p-2">
               {isError && (
-                <p className="text-red-600 text-md text-center">
-                  {isError.message}
-                </p>
+                <p className="text-red-600 text-md text-center">{message}</p>
               )}
             </div>
           </div>
