@@ -1,5 +1,5 @@
 const Customer = require("../models/customer");
-const asyncHandler = require("../middleware/asyncHandler");
+const asyncHandler = require("express-async-handler");
 
 exports.getCustomers = asyncHandler(async (req, res, next) => {
   const customers = await Customer.find();

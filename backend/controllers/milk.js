@@ -1,5 +1,5 @@
 const Milk = require("../models/milk");
-const asyncHandler = require("../middleware/asyncHandler");
+const asyncHandler = require("express-async-handler");
 
 exports.getAll = asyncHandler(async (req, res, next) => {
   const data = await Milk.find();

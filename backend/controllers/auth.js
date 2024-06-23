@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const asyncHandler = require("../middleware/asyncHandler");
+const asyncHandler = require("express-async-handler");
 
 exports.register = asyncHandler(async (req, res, next) => {
   const data = req.body;

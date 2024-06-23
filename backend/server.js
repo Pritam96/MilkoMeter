@@ -8,7 +8,7 @@ const salesRoutes = require("./routes/sales");
 const connectDB = require("./config/db");
 const { errorHandler, notFound } = require("./middleware/errorHandler");
 
-dotenv.config({ path: "./config/config.env" });
+dotenv.config();
 
 const app = express();
 

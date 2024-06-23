@@ -1,5 +1,5 @@
 const Sales = require("../models/sales");
-const asyncHandler = require("../middleware/asyncHandler");
+const asyncHandler = require("express-async-handler");
 
 exports.getSales = asyncHandler(async (req, res, next) => {
   const data = await Sales.find();
